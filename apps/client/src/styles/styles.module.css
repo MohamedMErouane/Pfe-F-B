@@ -374,7 +374,7 @@
 }
 
 .table th {
-  background-color: #9e1a1a;
+  background-color: rgb(104, 101, 101);
   font-weight: bold;
   text-align: left;
 }
@@ -405,7 +405,7 @@
   position: absolute;
   top: 50%;
   right: 10px;
-  transform: translate(-3190%,-1260%);
+  transform: translate(-150%,-1470%);
   cursor: pointer;
   color: #000;
 }

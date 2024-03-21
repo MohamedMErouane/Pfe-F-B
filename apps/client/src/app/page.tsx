@@ -8,6 +8,8 @@ import AdditionalInfo from '../components/AdditionalInfo';
 import Footer from '../components/Foter';
 import Last from '../components/last';
 import Appbar from '@/components/Appbar';
+import Features from '@/components/Features';
+import AboutSection from '@/components/AboutSection';
 
 export default function Home() {
 
@@ -35,6 +37,16 @@ export default function Home() {
     </div>
     
     <AdditionalInfo />
+    <h2 className="mt-40 text-3xl font-bold mb-8 text-black text-center">Discover Study Together</h2>
+
+    <Features/>
+     {/* Title and subtitle */}
+     <div className=" mt-40 section-header text-center mb-8" >
+        <h2 className="text-4xl font-bold mb-4 text-black">
+          Find your community. Set Goals. <br/>Achieve Them. Get rewarded.
+        </h2>
+      </div>
+    <AboutSection/>
     <Last />
     <Footer />
     </>

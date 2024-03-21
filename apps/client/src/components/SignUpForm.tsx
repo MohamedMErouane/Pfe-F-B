@@ -97,7 +97,7 @@ const SignupForm = () => {
      
 
       {/* Second Side - Signup Form */}
-      <div className="flex-1 flex justify-center items-center bg-white">
+      <div className="flex-1 mt-5 mb-5 w-128 flex justify-center items-center bg-white">
   <div className="w-full max-w-md p-8 rounded-lg shadow-lg">
     <h1 className="text-3xl mb-4 font-poppins font-semibold text-center text-black">Sign Up</h1>
     <form onSubmit={handleSubmit(saveUser)} className="space-y-4">

@@ -9,7 +9,7 @@ function App() {
       <div className="w-64"> {/* This div will take up 256px in width */}
         <SideBar />
       </div>
-      <div className="flex-grow mx-4"> {/* This div will take up the remaining space */}
+      <div className="flex-grow mx-4 "> {/* This div will take up the remaining space */}
         <LeaderboardPage />
       </div>
     </div>
