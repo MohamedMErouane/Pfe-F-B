@@ -1,0 +1,460 @@
+.body {
+  background-color: white;
+}
+
+/* Navbar styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color:transparent;
+  transition: background-color 0.3s;
+}
+
+.hide {
+  transform: translateY(-100%);
+}
+
+/* Navbar logo styles */
+.navbarLogo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+
+/* Navbar buttons styles */
+.navbarButtons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Login button styles */
+.navButton.login {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Hover styles for login button */
+.navButton.login:hover {
+  background-color: white;
+  color: rgb(221, 120, 120);
+}
+
+/* Sign up button styles */
+.navButton.signup {
+  color:white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+/* Hover styles for sign up text */
+.navButton.signup:hover {
+  color: red; /* Change color to red on hover */
+}
+
+
+
+.bigText {
+  position: absolute;
+  top: 60%;
+  left: 15%; /* Adjust left positioning */
+  transform: translateY(-50%);
+  text-align: left; /* Align text to the left */
+  color: #fff;
+  max-width: 40%; /* Limit width to prevent text from spanning across the entire page */
+}
+
+.bigText h1 {
+  font-size: 3.07rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  
+}
+
+.bigText p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+.learnMoreButton {
+  background-color: #fff;
+  color: #b95a5a;
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 1.51rem;
+  transition: background-color 0.3s, color 0.3s;
+  font-weight: bold; /* Make the text bold */
+
+}
+
+.learnMoreButton:hover {
+  background-color: transparent; /* Change background to transparent on hover */
+  color: #fff;
+  border-radius: 50px; /* Add border radius on hover */
+}
+/* styles/styles.module.css */
+
+.additionalText {
+  display: flex;
+  margin-top: 20px;
+}
+
+.transparentText {
+  padding: 5px 20px 2px 10px ;
+  border: 1px solid transparent; /* Remove border */
+  border-radius: 25px;
+  font-size: 50 px; /* Decrease font size */
+  background-color: rgba(255, 255, 255, 0.281); /* Transparent white background */
+  color: rgba(255, 255, 255, 0.76); /* Transparent white text */
+  
+}
+/* styles/styles.module.css */
+
+.additionalInfo {
+  background-color: #fff; /* White background for the additional info container */
+  padding: 50px; /* Add padding to the additional info container */
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.bigText1 {
+  font-size: 2.6rem;
+  text-align: center ;
+  color: black;
+  margin-top: 100px;;
+}
+
+.infoContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.infoItem {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.infoItem strong {
+  display: block;
+  font-size: 4rem;
+  color: rgb(160, 100, 230);
+}
+
+.infoItem p {
+  font-size: 1rem;
+  margin-top: 5px;
+  color: rgb(121, 27, 230);
+}
+
+.lastSection {
+  margin-top: 150px;
+  padding: 50px;
+  background: linear-gradient(180deg,rgb(243, 55, 86), #d34e10); /* Pink to orange gradient from top to bottom */
+  text-align: center;
+}
+
+.bigText2 {
+  font-size: 2.5rem;
+  color: #fff; /* White text color */
+  margin-bottom: 20px;
+}
+
+.smallText {
+  font-size: 1.5rem;
+  color: #fff; /* White text color */
+  margin-bottom: 40px;
+}
+
+.getStartedButton {
+  background-color: #fff; /* White button background */
+  color: #FF6B6B; /* Pink text color */
+  padding: 15px 30px;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.getStartedButton:hover {
+  background-color: #FF6B6B; /* Pink background on hover */
+  color: #fff; /* White text color on hover */
+}
+/* styles/Footer.module.css */
+
+.footer {
+  background-color: #ffffff; /* Dark background color */
+  color: #000000; /* White text color */
+  padding: 40px ;
+  margin-top: 70px;
+  display: flex;
+  justify-content: space-between; /* Align items horizontally */
+  align-items: center; /* Align items vertically */
+  background: linear-gradient(#f4eef5, #fff);
+  
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  
+}
+
+.logo {
+  margin-right: 10px;
+  transform: translate(10%,0%);
+  color: orangered;
+  margin-top: -300px;
+}
+
+.name {
+  font-size: 20px;
+  color: rgb(174, 82, 240);
+}
+
+.footerLinks {
+  display: flex;
+}
+
+.footerColumn {
+  margin-right: 30px;
+
+}
+
+.footerColumn h3 {
+  margin-bottom: 20px;
+  font-weight: bold; /* Make the first item bold */
+}
+
+.footerColumn ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footerColumn ul li {
+  margin-bottom: 10px;
+}
+
+.footerColumn ul li a {
+  color: #000000;
+  text-decoration: none;
+  transition: color 0.3s;
+  
+}
+
+.footerColumn ul li a:hover {
+  color: #FF6B6B; /* Hover color */
+}
+.titleA{
+  margin-right: -50px;
+  margin-top: -300px;
+}
+.socialIcons {
+  display: flex;
+  align-items: center;
+  margin-top: -400px;
+}
+
+.socialIcons a {
+  color: #e039f0;
+  font-size: 35px;
+  margin-right: 10px;
+  margin-bottom: -100px;
+  text-decoration: none;
+  border: solid 2px rgb(166, 90, 221);
+  border-radius: 20px;
+}
+
+.socialIcons a:hover {
+  color: #FF6B6B; /* Hover color */
+}
+/* styles/Sidebar.module.css */
+.sidebar {
+  width: 250px;
+  height: 100%;
+  background-color: #000000;
+  color: rgb(0, 0, 0);
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+  text-decoration: underline;
+}
+.card h2 {
+  margin-top: 10px;
+}
+
+.card p {
+  margin-top: 10px;
+}
+/* pour la circle vert*/
+.cercle {
+  width: 12px;
+  height: 12px;
+  background-color: #a1d38a;
+  border: 1px #000;
+  border-radius: 200px;
+  transform: translate(90%,165%);
+}
+/* ChartComponent */
+.title {
+  color: #c22626;
+  text-align: center; 
+  margin-bottom: 20px; 
+  font-size: 3.2rem;
+  justify-content: space-between;
+}
+/* LeaderboardPage.module.css */
+.container4 {
+  margin: 20px;
+  background-image: url(../../public/th8.jpg);
+}
+
+.heading {
+  color: rgb(194, 88, 185);
+  font-size: 50px;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 10px;
+}
+
+.input {
+  padding: 8px;
+  margin-bottom: 10px;
+  color: #000;
+}
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  color: black;
+}
+
+.table th {
+  background-color: #9e1a1a;
+  font-weight: bold;
+  text-align: left;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f7f3f3;
+  color: #000;
+}
+
+.table tbody tr:hover {
+  background-color: #88db93;
+}
+
+.inputContainer {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input {
+  padding: 10px 35px 10px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 300px;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translate(-3190%,-1260%);
+  cursor: pointer;
+  color: #000;
+}
+
+/* chat page */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.messageContainer {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.message {
+  color: black;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}

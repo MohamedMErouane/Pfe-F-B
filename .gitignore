@@ -1,0 +1,30 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore build directories
+/build/
+/out/
+/.next/
+
+# Ignore environment variables file
+.env
+
+# Ignore Nest.js dist directory
+/dist/
+
+# Ignore Nest.js generated files
+*.js.map
+*.d.ts
+
+# Ignore npm debug log
+npm-debug.log*
+
+# Ignore npm error log
+npm-error.log
+
+# Ignore package-lock.json for npm
+package-lock.json
+
+# Ignore any IDE specific files or directories
+.idea/
+.vscode/
