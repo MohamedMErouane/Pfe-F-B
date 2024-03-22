@@ -57,6 +57,16 @@ function ChartComponent() {
           fill: false,
         }]
       },
+      options: {
+        scales: {
+          yAxes: [{
+              display: true,
+              ticks: {
+                  beginAtZero: true   // minimum value will be 0.
+              }
+          }]
+      }
+      }
     });
   
     canvas.style.width = "100%";
@@ -70,9 +80,9 @@ function ChartComponent() {
 
   return (
     <>
-      <h1 className={`w-[110px] mx-auto mt-4   text-xl font-semibold capitalize ${styles.title}`}>Study States</h1>
+      <h1 className={`w-[110px] mx-auto mt-10 text-xl font-semibold capitalize ${styles.title}`}>Study States</h1>
       <div className="w-[1100px] h-screen flex mx-auto my-auto">
-        <div className='border border-gray-400 pt-0 rounded-xl w-full h-fit my-auto shadow-xl mt-4'>
+        <div className='border border-gray-400 pt-0 rounded-xl w-full h-fit my-auto shadow-xl'>
           <canvas id='myChart'></canvas>
         </div>
       </div>
