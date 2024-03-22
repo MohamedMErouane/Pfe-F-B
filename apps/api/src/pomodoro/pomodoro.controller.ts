@@ -19,7 +19,7 @@ export class PomodoroController {
   }
 
   @Get()
-  findAll() {
+  findAll() : Promise<{ userId: string; totalHours: number }[]>  {
     return this.pomodoroService.findAll();
   }
 }

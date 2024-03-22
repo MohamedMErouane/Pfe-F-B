@@ -63,4 +63,16 @@ export class UserService {
     })
   }
 
+  async findName(id : string){
+    const user = await this.prisma.user.findUnique({
+      where : {
+        id
+      }
+    })
+
+    const name = user ? `${user.lastName} ${user.firstName}` : 'Unknown User';
+
+    return name
+  }
+
 }

@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePomodoroDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UserService } from 'src/user/user.service';
 
 
 
 @Injectable()
 export class PomodoroService {
 
-  constructor(private prisma : PrismaService){}
+  constructor(
+    private prisma : PrismaService,
+    private user : UserService
+    ){}
 
   async create(dto: CreatePomodoroDto) {
 
@@ -59,10 +63,6 @@ export class PomodoroService {
     // Reverse the order of dates to make the current date the last in the array
     const reversedDates = dates.reverse();
   
-    console.log("##################################");
-    console.log(reversedDates);
-    console.log("##################################");
-  
     // Fetch study times for each day and calculate total hours
     const totalHoursPromises = reversedDates.map(async (date) => {
       const studyTime = await this.prisma.studyTime.findFirst({
@@ -82,16 +82,37 @@ export class PomodoroService {
     });
   
     const totalHours = await Promise.all(totalHoursPromises);
-    console.log(totalHours);
-
-
     
     return totalHours;
   }
 
 
-  findAll() {
-    return `This action returns all pomodoro`;
+  async findAll(): Promise<{ userId: string; totalHours: number; name: string }[]> {
+    const studyTimes = await this.prisma.studyTime.findMany({
+      select: {
+        userId: true,
+        hours: true
+      }
+    });
+  
+    const totalPerUser: { [userId: string]: number } = {};
+  
+    studyTimes.forEach(studyTime => {
+      totalPerUser[studyTime.userId] = (totalPerUser[studyTime.userId] || 0) + studyTime.hours;
+    });
+  
+    const result: { userId: string; totalHours: number; name: string }[] = [];
+  
+    for (const [userId, totalHours] of Object.entries(totalPerUser)) {
+      const name = await this.user.findName(userId); // Assuming you have a method to find the name based on userId
+      result.push({ userId, totalHours, name });
+    }
+  
+    console.log('this is the result');
+    console.log(result);
+  
+    return result;
   }
+  
 
 }

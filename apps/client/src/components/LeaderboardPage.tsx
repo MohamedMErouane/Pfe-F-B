@@ -1,37 +1,54 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../styles/styles.module.css';
 import { FaSearch } from 'react-icons/fa';
-const clients = [
-  { id: 1, name: 'John', hoursStudied: 10 },
-  { id: 2, name: 'Alice', hoursStudied: 8 },
-  { id: 3, name: 'Bob', hoursStudied: 12 },
-  { id: 4 , name: 'Hmed', hoursStudied:14},
-  { id: 5 , name: 'khalid', hoursStudied:60}
-];
+import { BACKEND_URL } from '@/lib/Constants';
+import { State } from '@/lib/types';
+
+
+
 const LeaderboardPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [states, setStates] = useState<State[]>([]);
 
-  const filteredClients = clients.filter(client =>
-    client.name.toLowerCase().includes(searchQuery.toLowerCase())
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`${BACKEND_URL}/pomodoro`);
+        if (res.ok) {
+          const data = await res.json();
+          setStates(data);
+        } else {
+          console.error('Failed to fetch data from the backend');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const filteredStates = states.filter(state =>
+    state.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const sortedClients = filteredClients.sort((a, b) => b.hoursStudied - a.hoursStudied);
+  const sortedStates = filteredStates.sort((a, b) => b.totalHours - a.totalHours);
 
   return (
-    <div className={styles.container2 } >
+    <div className={styles.container2}>
       <h1 className={`${styles.heading} ${styles.big} ${styles.center} ${styles.bold}`}>Leaderboard</h1>
-      <div style={{display: 'flex', justifyContent: 'center'}}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         <input
           type="text"
           placeholder="Search by name"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className={styles.input}
-          style={{marginRight: '10px'}}
+          style={{ marginRight: '10px' }}
         />
-         <FaSearch className={styles.searchIcon} />
+        <FaSearch className={styles.searchIcon} />
       </div>
-      <table className={`${styles.table} ${styles.center}`} style={{borderCollapse: 'collapse'}}>
+      <table className={`${styles.table} ${styles.center}`} style={{ borderCollapse: 'collapse' }}>
         <thead>
           <tr>
             <th>Rank</th>
@@ -40,11 +57,11 @@ const LeaderboardPage = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedClients.map((client, index) => (
-            <tr key={client.id}>
+          {sortedStates.map((state, index) => (
+            <tr key={state.userId}>
               <td>{index + 1}</td>
-              <td>{client.name}</td>
-              <td>{client.hoursStudied}</td>
+              <td>{state.name}</td>
+              <td>{state.totalHours}</td>
             </tr>
           ))}
         </tbody>

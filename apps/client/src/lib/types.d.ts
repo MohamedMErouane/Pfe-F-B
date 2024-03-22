@@ -22,3 +22,9 @@ export type Todo = {
   user : User
   userId : String
 }
+
+export type State = {
+  userId: string;
+  totalHours: number;
+  name: string;
+}
