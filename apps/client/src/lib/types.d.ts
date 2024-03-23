@@ -6,6 +6,11 @@ export type User = {
     emailVerified : string;
     phone : string;
     image : string;
+    about    : string;     
+    facebook : string;
+    instagram: string;
+    twitter  : string;
+    linkedIn : string
   };
 
 export type Tokens = {

@@ -22,6 +22,12 @@ model User {
   emailVerified DateTime?
   phone         String
   image         String?
+  about         String?
+  facebook      String?
+  instagram     String?
+  twitter       String?
+  linkedIn      String?
+
   todos Todo[]
   studyTime StudyTime[]
 }

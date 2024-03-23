@@ -15,7 +15,6 @@ async function refreshToken(token: JWT): Promise<JWT> {
       authorization: `Refresh ${token.backendTokens.refreshToken}`,
     },
   });
-  console.log("refreshed");
 
   const response = await res.json();
 

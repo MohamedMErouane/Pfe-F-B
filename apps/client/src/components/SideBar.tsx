@@ -11,9 +11,11 @@ import { FaComments } from "react-icons/fa";
 import { BiMessageSquareDots } from "react-icons/bi";
 import { IoMdSchool } from "react-icons/io";
 import NavItem from "./NavItem";
+import { useSession } from "next-auth/react";
 
 const SideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const {data : session} = useSession()
 
   return (
     <div className="fixed left-0 top-0 h-full w-64 bg-gray-800 text-white">
@@ -31,7 +33,7 @@ const SideBar = () => {
             </div>
             <Disclosure.Panel className={`flex flex-col ${isOpen ? 'block' : 'hidden'}`}>
               <NavItem icon={<MdDashboard />} label="Dashboard" href="/home" />
-              <NavItem icon={<CgProfile />} label="Profile" href="/profile" />
+              <NavItem icon={<CgProfile />} label="Profile" href={`/profile/${session?.user.id}`} />
               <NavItem icon={<CiVideoOn  />} label="Video Rooms" href="/study" />
               <NavItem icon={<FaComments />} label="Chat Rooms" href="/chat" />
               <NavItem icon={<BiMessageSquareDots />} label="Study Goals" href="/todo" />

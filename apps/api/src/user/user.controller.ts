@@ -2,16 +2,16 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Put } fro
 import { UserService } from './user.service';
 
 import { AtGuard } from 'src/auth/guards';
-import { UpdatePasswordDto } from './dto';
+import { UpdatePasswordDto, UpdateUserDto } from './dto';
 
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post("id")
-  async findById(@Body("id") id : string){
-    return this.userService.findById(id)
+  @Get(':id') // This defines the route for GET requests to /user/:id
+  async findById(@Param('id') id: string) { // Use @Param to access route parameters
+    return this.userService.findById(id);
   }
 
   @Post("email")
@@ -27,5 +27,10 @@ export class UserController {
   @Put('email-verified')
   async verifyEmail(@Body('id') id: string) {
     return this.userService.verifyEmail(id);
+  }
+
+  @Put(':id')
+  async updateUser(@Param('id') id: string, @Body() dto: UpdateUserDto) {
+    return this.userService.updateUser(id, dto);
   }
 }

@@ -1,14 +1,16 @@
-
+// Profile.js
 
 import Head from "next/head";
-import Card from "../../components/Cards";
+
 import SideBar from "@/components/SideBar";
+import Card from "@/components/Cards";
+
+const Profile = ({params}) => {
+
+  const id = params.id
 
 
-const Profile = () => {
   return (
-
-
     <div className="flex">
     <div className="w-64">
       <SideBar />
@@ -20,13 +22,11 @@ const Profile = () => {
         <link rel="icon" href="/pro.ico" />
       </Head>
       <div className="bg-hero w-full h-screen bg-cover bg-fixed flex justify-center items-center">
-        <Card />
+        <Card id={id}/>
       </div>
     </div>
   </div>
-
-
   );
 }
 
-export default Profile
+export default Profile;

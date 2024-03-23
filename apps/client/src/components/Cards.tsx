@@ -1,30 +1,102 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from "next/image";
 import { FaInstagram, FaFacebookSquare, FaLinkedin } from "react-icons/fa";
 import { BsTwitter } from "react-icons/bs";
 import { useSession } from 'next-auth/react';
+import { BACKEND_URL } from '@/lib/Constants';
+import { toast } from 'react-toastify';
+import { User } from '@/lib/types';
 
-function Card() {
+function Card({id}) {
+  const {data : session} = useSession()
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/user/${id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+
+        const userData : User = await response.json();
+        setUser(userData)
+        setLoading(false)
+
+        setFirstName(userData.firstName);
+        setLastName(userData.lastName);
+        setAbout(userData.about);
+        setFacebook(userData.facebook);
+        setTwitter(userData.twitter);
+        setInstagram(userData.instagram);
+        setLinkedIn(userData.linkedIn);
+
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    if (id) {
+      fetchUserData();
+    }
+  }, [id]);  
+
   const [editing, setEditing] = useState(false);
-  const [name, setName] = useState('Merouane Mohamed');
-  const [jobTitle, setJobTitle] = useState('Full stack Developer');
-  const [about, setAbout] = useState('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [about, setAbout] = useState('');
   const [facebook, setFacebook] = useState('');
   const [twitter, setTwitter] = useState('');
   const [instagram, setInstagram] = useState('');
-  const [linkedin, setLinkedin] = useState('');
+  const [linkedIn, setLinkedIn] = useState('');
+  const [user, setUser] = useState<User | null>(null)
   const [image, setImage] = useState('/1.jpg'); // Initial image path
 
-  const {data : session} = useSession()
 
   const handleEditClick = () => {
     setEditing(true);
   };
 
-  const handleSaveClick = () => {
+  const handleSaveClick = async () => {
     setEditing(false);
-    // Perform save operation here (e.g., send data to backend)
+
+    const userId = session?.user.id
+
+    try {
+      const res = await fetch(`${BACKEND_URL}/user/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          about,
+          facebook,
+          twitter,
+          instagram,
+          linkedIn
+        }),
+      });
+
+      if (res.ok) {
+        toast.success("Information updated successfully");
+      } else {
+        throw new Error('Failed to update user');
+      }
+    } catch (error) {
+      console.error('Failed to update user:', error);
+      toast.error("Something went wrong");
+    }
   };
 
   const handleImageChange = (e) => {
@@ -35,6 +107,10 @@ function Card() {
 
   return (
     <div  className='cursor-pointer m-1 rounded-2xl flex flex-col justify-start items-center w-96 border-8 border-gradient-to-l from-blue-300 via-white to-black-300 bg-gradient-to-tr h-3/4 '>
+      
+      {loading ? ( // Display loading state if data is being fetched
+      <p className="text-black text-4xl flex justify-center items-center h-full">Loading...</p>
+      ) : (
       <div>
         <div className='flex justify-center margin-right:30px items-center py-6'>
           {editing ? (
@@ -45,7 +121,7 @@ function Card() {
         </div>
         {!editing ? (
           <div>
-            <h1 className='text-neutral-700 font-bold text-3xl text-center'>{session?.user.lastName} {session?.user.firstName}</h1>
+            <h1 className='text-neutral-700 font-bold text-3xl text-center'>{lastName} {firstName}</h1>
             <p className='font-normal uppercase text-base text-neutral-700 text-center pb-4'>{session?.user.email}</p>
             <h3 className='font-semibold text-md uppercase text-center py-2'>About</h3>
             <p className='text-sm text-neutral-600 text-center mx-10'>{about}</p>
@@ -65,23 +141,25 @@ function Card() {
                   <FaInstagram className='w-6 h-6 text-yellow-400 cursor-pointer'/>
                 </a>
               )}
-              {linkedin && (
-                <a href={linkedin} target="_blank" rel="noopener noreferrer">
+              {linkedIn && (
+                <a href={linkedIn} target="_blank" rel="noopener noreferrer">
                   <FaLinkedin className='w-6 h-6 text-blue-400 cursor-pointer'/>
                 </a>
               )}
             </div>
-            <div className='flex justify-center items-center gap-6 py-6'>
-              <button onClick={handleEditClick} className='text-white uppercase bg-gradient-to-r hover:bg-gradient-to-l from-cyan-500 to-blue-500 p-3 font-semibold rounded-lg w-11/12 '>Edit</button>
-            </div>
+            {session?.user.id === user?.id && 
+                <div className='flex justify-center items-center gap-6 py-6'>
+                    <button onClick={handleEditClick} className='text-white uppercase bg-gradient-to-r hover:bg-gradient-to-l from-cyan-500 to-blue-500 p-3 font-semibold rounded-lg w-11/12 '>Edit</button>
+                </div>
+            }
           </div>
         ) : (
           <form onSubmit={handleSaveClick} className="flex flex-col items-center w-full">
             <div className='flex flex-col justify-start items-center w-full mb-4'>
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} className='w-full p-2 rounded-lg border border-gray-300 text-black'/>
+              <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} className='w-full p-2 rounded-lg border border-gray-300 text-black'/>
             </div>
             <div className='flex flex-col justify-start items-center w-full mb-4'>
-              <input type="text" value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} className='w-full p-2 rounded-lg border border-gray-300 text-black'/>
+              <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} className='w-full p-2 rounded-lg border border-gray-300 text-black'/>
             </div>
             <div className='flex flex-col justify-start items-center w-full mb-4'>
               <textarea value={about} onChange={(e) => setAbout(e.target.value)} className='w-full p-2 rounded-lg border border-gray-300 text-black'/>
@@ -96,12 +174,15 @@ function Card() {
               <input type="text" value={instagram} onChange={(e) => setInstagram(e.target.value)} placeholder="Instagram Link" className='w-full p-2 rounded-lg border border-gray-300 text-black'/>
             </div>
             <div className='flex flex-col justify-start items-center w-full mb-4'>
-              <input type="text" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} placeholder="LinkedIn Link" className='w-full p-2 rounded-lg border border-gray-300 text-black'/>
+              <input type="text" value={linkedIn} onChange={(e) => setLinkedIn(e.target.value)} placeholder="LinkedIn Link" className='w-full p-2 rounded-lg border border-gray-300 text-black'/>
             </div>
             <button type="submit" className='text-white uppercase bg-gradient-to-r hover:bg-gradient-to-l from-cyan-500 to-blue-500 p-3 font-semibold rounded-lg w-11/12 '>Save</button>
           </form>
         )}
       </div>      
+
+      )}
+      
     </div>
   );
 }

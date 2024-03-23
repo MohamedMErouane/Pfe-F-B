@@ -1,9 +1,10 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 
-import { CreateUserDto } from './dto';
+import { CreateUserDto, UpdateUserDto } from './dto';
 import { hash } from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { userInfo } from 'os';
 
 @Injectable()
 export class UserService {
@@ -38,11 +39,16 @@ export class UserService {
   }
 
   async findById(id : string) {
-    return await this.prisma.user.findUnique({
+    const user =  await this.prisma.user.findUnique({
       where : {
         id
       }
     })
+
+    const {password, ...result} = user
+    console.log("this from nestjs ")
+    console.log(result)
+    return result
   }
 
   async updatePassword(dto: UpdatePasswordDto) {
@@ -54,8 +60,6 @@ export class UserService {
   }
 
   async verifyEmail(id : string) {
-
-    console.log("don't ")
 
     return this.prisma.user.update({
       where : {id},
@@ -73,6 +77,28 @@ export class UserService {
     const name = user ? `${user.lastName} ${user.firstName}` : 'Unknown User';
 
     return name
+  }
+
+  async updateUser(id : string, dto : UpdateUserDto){
+
+    console.log("hello in update user function")
+
+    const {firstName, lastName, about, facebook, instagram, twitter, linkedIn} = dto
+
+    return this.prisma.user.update({
+      where : {
+        id
+      },
+      data : {
+        firstName,
+        lastName,
+        about,
+        facebook,
+        instagram,
+        twitter,
+        linkedIn
+      }
+    })
   }
 
 }
