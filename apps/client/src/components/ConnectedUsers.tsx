@@ -1,19 +1,12 @@
+import { ConnectedUser } from '@/lib/types';
 import React from 'react';
 
-interface User {
-  id: number;
-  username: string;
-  imageUrl: string;
-  connected: boolean;
-}
-
 interface Props {
-  users: User[];
+  users: ConnectedUser[];
   onClose: () => void;
 }
 
 const ConnectedUsers: React.FC<Props> = ({ users, onClose }) => {
-  const connectedUsers = users.filter(user => user.connected);
 
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-900 bg-opacity-80 z-50 overflow-hidden">
@@ -27,15 +20,17 @@ const ConnectedUsers: React.FC<Props> = ({ users, onClose }) => {
           </button>
         </div>
         <ul className="space-y-4">
-          {connectedUsers.map(user => (
+          {users.map(user => (
             <li key={user.id} className="flex items-center">
               <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4">
-                {user.connected && <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="none" stroke="currentColor">
                   <circle cx="10" cy="10" r="10" />
-                </svg>}
+                </svg>
               </div>
-              <img src={user.imageUrl} alt={user.username} className="w-12 h-12 rounded-full mr-4" />
-              <span>{user.username}</span>
+              <img src={`http://localhost:3333/user/profile/${user.username}`} alt={user.username} className="w-12 h-12 rounded-full mr-4" />
+              <a href={`/profile/${user.username}`}>
+               <span>{user.username}</span>
+              </a>
             </li>
           ))}
         </ul>

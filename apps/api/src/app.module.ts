@@ -9,6 +9,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { MessagesModule } from './messages/messages.module';
 import { TodoModule } from './todo/todo.module';
 import { PomodoroModule } from './pomodoro/pomodoro.module';
+import { ConnectedUsersModule } from './connected-users/connected-users.module';
 
 
 @Module({
@@ -20,6 +21,7 @@ import { PomodoroModule } from './pomodoro/pomodoro.module';
     MessagesModule,
     TodoModule,
     PomodoroModule,
+    ConnectedUsersModule,
   ],
   controllers: [AppController],
   providers: [

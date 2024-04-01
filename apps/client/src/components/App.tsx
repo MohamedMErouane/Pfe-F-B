@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowRightIcon, ArchiveBoxIcon, Battery0Icon, BellIcon } from '@heroicons/react/24/outline';
 import ConnectedUsers from './ConnectedUsers'; // Import the ConnectedUsers component
 import PomodoroApp from './Pomodoro';
@@ -7,6 +7,9 @@ import Video from './Video';
 import { FaPhoneSlash } from 'react-icons/fa';
 import Image from 'next/image'; // Import Image component from Next.js
 import BackgroundImage from '../../public/th8.jpg'; // Import the background image
+import { ConnectedUser } from '@/lib/types';
+import { BACKEND_URL } from '@/lib/Constants';
+import io from 'socket.io-client';
 
 interface Tab {
   id: number;
@@ -15,11 +18,12 @@ interface Tab {
 }
 
 const App: React.FC = () => {
+  const [socket, setSocket] = useState<any>(null);
   const [selectedTab, setSelectedTab] = useState<number>(1);
   const [clientStreams, setClientStreams] = useState<string[]>([]);
   const [confirmDialog, setConfirmDialog] = useState<boolean>(false);
   const [showConnectedUsers, setShowConnectedUsers] = useState<boolean>(false); // State to control visibility of ConnectedUsers component
-
+  const [users, setUsers] = useState<ConnectedUser[]>([]);
   const tabs: Tab[] = [
     {
       id: 1,
@@ -43,22 +47,29 @@ const App: React.FC = () => {
     },
   ];
 
-  const users = [
-    { id: 1, username: 'Mohamed', imageUrl: '1.jpg', connected: true },
-    { id: 1, username: 'Mohamed', imageUrl: '1.jpg', connected: true },
-    { id: 1, username: 'Mohamed', imageUrl: '1.jpg', connected: true },
-    { id: 1, username: 'Mohamed', imageUrl: '1.jpg', connected: true },
-    { id: 2, username: 'ismail', imageUrl: 'user2.jpg', connected: false },
-    { id: 3, username: ' Hmed', imageUrl: '1.jpg', connected: true },
-    { id: 3, username: ' Hmed', imageUrl: '1.jpg', connected: true },
-    { id: 3, username: ' Hmed', imageUrl: '1.jpg', connected: true },
-    { id: 3, username: ' Hmed', imageUrl: '1.jpg', connected: true },
-    { id: 3, username: ' Hmed', imageUrl: '1.jpg', connected: true },
-    { id: 3, username: ' Hmed', imageUrl: '1.jpg', connected: true },
-    { id: 3, username: ' Hmed', imageUrl: '1.jpg', connected: true },
-    { id: 3, username: ' Hmed', imageUrl: '1.jpg', connected: true },
+  useEffect(() => {
+    const newSocket = io(BACKEND_URL);
+    setSocket(newSocket);
 
-  ];
+    newSocket.on('connect', () => {
+      console.log('Connected to socket server');
+    });
+
+    newSocket.on('disconnect', () => {
+      console.log('Disconnected from socket server');
+    });
+
+    newSocket.emit('findAllUsers', {}, (response : ConnectedUser[]) => {
+      setUsers(response);
+    });
+
+    return () => {
+      newSocket?.disconnect();
+    };
+
+  }, [users]);
+
+  console.log(users)
 
   const addClientStream = (stream: string) => {
     setClientStreams(prevStreams => [...prevStreams, stream]);

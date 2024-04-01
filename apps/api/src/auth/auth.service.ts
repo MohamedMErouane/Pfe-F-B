@@ -4,6 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { ConnectedUsersGateway } from 'src/connected-users/connected-users.gateway';
 
 const EXPIRE_TIME = 5 * 60 * 60 * 1000 
 
@@ -11,11 +12,14 @@ const EXPIRE_TIME = 5 * 60 * 60 * 1000
 export class AuthService {
   constructor(
     private jwt : JwtService,
-    private userService : UserService  
+    private userService : UserService,
+    private readonly connectedUsersGateway: ConnectedUsersGateway
   ){}
 
   async signin(dto: CreateAuthDto) {
     const user = await this.validateUser(dto)
+
+    await this.connectedUsersGateway.join({ username: user.username, image: user.image });
 
     const payload = {
       email : user.email,

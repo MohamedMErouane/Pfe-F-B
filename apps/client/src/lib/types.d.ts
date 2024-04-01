@@ -34,3 +34,7 @@ export type State = {
   totalHours: number;
   name: string;
 }
+
+export type ConnectedUser = {
+  username : string;
+}
