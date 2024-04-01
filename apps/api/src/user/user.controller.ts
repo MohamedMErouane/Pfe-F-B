@@ -7,9 +7,7 @@ import { diskStorage } from 'multer';
 import {v4 as uuidv4} from 'uuid'
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as path from 'path';
-import { UpdateImageDto } from './dto/update-image.dto';
 import { Observable, of } from 'rxjs';
-import { User } from '@prisma/client';
 
 
 export const storage = {
@@ -28,6 +26,12 @@ export const storage = {
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get(':username') 
+  async findByUsername(@Param('username') username: string) {
+    console.log(username)
+    return this.userService.findByUsername(username);
+  }
 
   @Post("id")
   async findById(@Body("id") id : string){
@@ -52,7 +56,7 @@ export class UserController {
     return this.userService.verifyEmail(id);
   }
   
-  @Put(':id')
+  @Put(':username')
 @UseInterceptors(FileInterceptor('image', {
     storage: diskStorage({
       destination: './uploads/profileImages', // Specify your upload directory
@@ -65,20 +69,20 @@ export class UserController {
       },
     })
   }))
-uploadFile(@Param('id') id: string, @UploadedFile() image : Express.Multer.File, @Body() dto : UpdateUserDto){
+uploadFile(@Param('username') username: string, @UploadedFile() image : Express.Multer.File, @Body() dto : UpdateUserDto){
 
   if (!image) {
     console.log('no image sent')
-    return this.userService.updateUser(id, undefined, dto);
+    return this.userService.updateUser(username, undefined, dto);
   }
 
-  return this.userService.updateUser(id, image.filename, dto);
+  return this.userService.updateUser(username, image.filename, dto);
 }
 
 
-  @Get('profile/:id')
-  async getImage(@Param('id') id: string, @Res() res): Promise<Observable<Object>> {
-    const user = await this.findById(id)
+  @Get('profile/:username')
+  async getImage(@Param('username') username: string, @Res() res): Promise<Observable<Object>> {
+    const user = await this.userService.findByUsername(username)
     if(!user){
       return null
     }
@@ -86,6 +90,7 @@ uploadFile(@Param('id') id: string, @UploadedFile() image : Express.Multer.File,
     // Use join function to construct file path
     const filePath = path.join(process.cwd(), 'uploads', 'profileImages', user.image);
     return of(res.sendFile(filePath));
+
   }
   
 }

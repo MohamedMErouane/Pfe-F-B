@@ -8,7 +8,7 @@ import { BACKEND_URL } from '@/lib/Constants';
 import { toast } from 'react-toastify';
 import { User } from '@/lib/types';
 
-function Card({ id }) {
+function Card({ username }) {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
@@ -25,7 +25,7 @@ function Card({ id }) {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`${BACKEND_URL}/user/${id}`, {
+        const response = await fetch(`${BACKEND_URL}/user/${username}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -36,9 +36,12 @@ function Card({ id }) {
           throw new Error('Failed to fetch user data');
         }
 
+        
+        
         const userData: User = await response.json();
         setUser(userData);
         setLoading(false);
+        console.log(userData)
 
         setFirstName(userData.firstName);
         setLastName(userData.lastName);
@@ -47,17 +50,18 @@ function Card({ id }) {
         setTwitter(userData.twitter);
         setInstagram(userData.instagram);
         setLinkedIn(userData.linkedIn);
-        setImage(userData.image ? `http://localhost:3333/user/profile/${id}` : '/1.jpg'); // Set image to null if not provided
+        setImage(userData.image ? `http://localhost:3333/user/profile/${username}` : '/1.jpg'); // Set image to null if not provided
 
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
 
-    if (id) {
+    console.log('Username:', username);
+    if (username ?? '') {
       fetchUserData();
     }
-  }, [id]);
+  }, [username]);
 
   const handleEditClick = () => {
     setEditing(true);
@@ -66,7 +70,6 @@ function Card({ id }) {
   const handleSaveClick = async () => {
     setEditing(false);
   
-    const userId = session?.user.id;
   
     const formData = new FormData();
     formData.append('firstName', firstName);
@@ -82,7 +85,7 @@ function Card({ id }) {
     }
   
     try {
-      const res = await fetch(`${BACKEND_URL}/user/${userId}`, {
+      const res = await fetch(`${BACKEND_URL}/user/${username}`, {
         method: 'PUT',
         body: formData
       });
@@ -99,7 +102,7 @@ function Card({ id }) {
   };
   
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e: { target: { files: any[]; }; }) => {
   const file = e.target.files[0];
 
   if (file) {

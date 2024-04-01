@@ -1,6 +1,5 @@
 "use server";
 
-
 import {
   compileActivationTemplate,
   compileResetPassTemplate,

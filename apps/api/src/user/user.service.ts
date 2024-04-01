@@ -71,6 +71,18 @@ export class UserService {
     return result
   }
 
+  async findByUsername(username : string) {
+    const user =  await this.prisma.user.findUnique({
+      where : {
+        username
+      }
+    })
+
+    const {password, ...result} = user
+    console.log(result)
+    return result
+  }
+
   async updatePassword(dto: UpdatePasswordDto) {
     const { id, newPassword } = dto;
     return this.prisma.user.update({
@@ -99,7 +111,7 @@ export class UserService {
     return name
   }
 
-  async updateUser(id: string, image: string | undefined, dto: UpdateUserDto) {
+  async updateUser(username: string, image: string | undefined, dto: UpdateUserDto) {
     console.log("hello in update user function");
 
     const { firstName, lastName, about, facebook, instagram, twitter, linkedIn } = dto;
@@ -123,7 +135,7 @@ export class UserService {
     // Update the user record
     return this.prisma.user.update({
         where: {
-            id
+            username
         },
         data: updateData
     });

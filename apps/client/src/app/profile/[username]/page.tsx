@@ -7,7 +7,7 @@ import Card from "@/components/Cards";
 
 const Profile = ({params}) => {
 
-  const id = params.id
+  const username = params.username
 
 
   return (
@@ -22,7 +22,7 @@ const Profile = ({params}) => {
         <link rel="icon" href="/pro.ico" />
       </Head>
       <div className="bg-hero w-full h-screen bg-cover bg-fixed flex justify-center items-center">
-        <Card id={id}/>
+        <Card username={username}/>
       </div>
     </div>
   </div>

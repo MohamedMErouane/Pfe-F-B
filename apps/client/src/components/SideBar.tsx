@@ -33,7 +33,7 @@ const SideBar = () => {
             </div>
             <Disclosure.Panel className={`flex flex-col ${isOpen ? 'block' : 'hidden'}`}>
               <NavItem icon={<MdDashboard />} label="Dashboard" href="/home" />
-              <NavItem icon={<CgProfile />} label="Profile" href={`/profile/${session?.user.id}`} />
+              <NavItem icon={<CgProfile />} label="Profile" href={`/profile/${session?.user.username}`} />
               <NavItem icon={<CiVideoOn  />} label="Video Rooms" href="/study" />
               <NavItem icon={<FaComments />} label="Chat Rooms" href="/chat" />
               <NavItem icon={<BiMessageSquareDots />} label="Study Goals" href="/todo" />
