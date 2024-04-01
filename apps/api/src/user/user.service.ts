@@ -4,7 +4,7 @@ import { CreateUserDto, UpdateUserDto } from './dto';
 import { hash } from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdatePasswordDto } from './dto/update-password.dto';
-import { userInfo } from 'os';
+
 
 @Injectable()
 export class UserService {
@@ -79,17 +79,13 @@ export class UserService {
     return name
   }
 
-  async updateUser(id : string, dto : UpdateUserDto){
+  async updateUser(id: string, image: string | undefined, dto: UpdateUserDto) {
+    console.log("hello in update user function");
 
-    console.log("hello in update user function")
+    const { firstName, lastName, about, facebook, instagram, twitter, linkedIn } = dto;
 
-    const {firstName, lastName, about, facebook, instagram, twitter, linkedIn} = dto
-
-    return this.prisma.user.update({
-      where : {
-        id
-      },
-      data : {
+    // Prepare the update data object
+    const updateData: any = {
         firstName,
         lastName,
         about,
@@ -97,8 +93,19 @@ export class UserService {
         instagram,
         twitter,
         linkedIn
-      }
-    })
-  }
+    };
 
+    // Check if image is provided
+    if (image !== undefined) {
+        updateData.image = image;
+    }
+
+    // Update the user record
+    return this.prisma.user.update({
+        where: {
+            id
+        },
+        data: updateData
+    });
+}
 }

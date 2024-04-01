@@ -30,3 +30,4 @@ const Profile = ({params}) => {
 }
 
 export default Profile;
+
