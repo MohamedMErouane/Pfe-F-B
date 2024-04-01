@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import { BACKEND_URL } from '@/lib/Constants';
 import { toast } from 'react-toastify';
 import { User } from '@/lib/types';
+import Spinner from '@/components/Spinner'
 
 function Card({ username }) {
   const { data: session } = useSession();
@@ -118,7 +119,9 @@ function Card({ username }) {
     <div className='cursor-pointer m-1 rounded-2xl flex flex-col justify-start items-center w-96 border-8 border-gradient-to-l from-blue-300 via-white to-black-300 bg-gradient-to-tr h-3/4 '>
 
       {loading ? (
-        <p className="text-black text-4xl flex justify-center items-center h-full">Loading...</p>
+        <div className="text-black text-4xl flex justify-center items-center h-full">
+          <Spinner/>
+        </div>
       ) : (
         <div>
           {!editing ? (

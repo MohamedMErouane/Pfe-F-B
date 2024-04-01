@@ -6,6 +6,7 @@ import io from 'socket.io-client';
 import { BACKEND_URL } from '@/lib/Constants';
 import { useSession } from 'next-auth/react';
 import { Link } from 'react-router-dom';
+import Spinner from '@/components/Spinner';
 
 interface Message {
   id : number
@@ -20,6 +21,8 @@ const ChatPage = () => {
   const [messages, setMessages] = useState<Message[]>([])
   const [newMessage, setNewMessage] = useState('');
   const chatRef = useRef<HTMLDivElement>(null); 
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const newSocket = io(BACKEND_URL);
@@ -35,6 +38,7 @@ const ChatPage = () => {
 
     newSocket.emit('findAllMessages', {}, (response : Message[]) => {
       setMessages(response);
+      setLoading(false);
     });
 
     newSocket.on('message', (message) => {
@@ -82,6 +86,11 @@ const ChatPage = () => {
     <div className="flex h-screen">
       <SideBar />
       <div className="flex-1 h-screen flex flex-col justify-center items-center bg-gray-900">
+      {loading ? (
+        <div className="text-white text-4xl flex justify-center items-center h-full">
+          <Spinner/>
+        </div>
+      ) : (
         <div className="bg-gray-800 rounded-lg p-8 w-full max-w-screen-md flex flex-col flex-grow mx-auto">
           <h1 className="text-white text-3xl mb-4">Chat App</h1>
           <div className="flex-1 overflow-y-auto" ref={chatRef} style={{ maxHeight: '70vh', scrollbarWidth: 'thin', scrollbarColor: 'transparent transparent' }}>
@@ -132,6 +141,7 @@ const ChatPage = () => {
             </button>
           </form>
         </div>
+      )}
       </div>
     </div>
   );
