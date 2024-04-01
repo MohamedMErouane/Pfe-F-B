@@ -19,7 +19,7 @@ export class AuthService {
   async signin(dto: CreateAuthDto) {
     const user = await this.validateUser(dto)
 
-    await this.connectedUsersGateway.join({ username: user.username, image: user.image });
+    await this.connectedUsersGateway.join({ username: user.username });
 
     const payload = {
       email : user.email,

@@ -21,7 +21,7 @@ const ConnectedUsers: React.FC<Props> = ({ users, onClose }) => {
         </div>
         <ul className="space-y-4">
           {users.map(user => (
-            <li key={user.id} className="flex items-center">
+            <li className="flex items-center">
               <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="none" stroke="currentColor">
                   <circle cx="10" cy="10" r="10" />

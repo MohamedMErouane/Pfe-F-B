@@ -104,7 +104,8 @@ export class PomodoroService {
     const result: { userId: string; totalHours: number; name: string }[] = [];
   
     for (const [userId, totalHours] of Object.entries(totalPerUser)) {
-      const name = await this.user.findName(userId); // Assuming you have a method to find the name based on userId
+      const user = await this.user.findById(userId);
+      const name = user.username 
       result.push({ userId, totalHours, name });
     }
   

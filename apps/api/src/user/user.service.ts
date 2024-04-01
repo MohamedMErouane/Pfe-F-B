@@ -101,18 +101,6 @@ export class UserService {
     })
   }
 
-  async findName(id : string){
-    const user = await this.prisma.user.findUnique({
-      where : {
-        id
-      }
-    })
-
-    const name = user ? `${user.lastName} ${user.firstName}` : 'Unknown User';
-
-    return name
-  }
-
   async updateUser(username: string, image: string | undefined, dto: UpdateUserDto) {
     console.log("hello in update user function");
 

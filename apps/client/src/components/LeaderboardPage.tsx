@@ -52,7 +52,7 @@ const LeaderboardPage = () => {
         <thead>
           <tr>
             <th>Rank</th>
-            <th>Name</th>
+            <th>Username</th>
             <th>Hours Studied</th>
           </tr>
         </thead>
@@ -60,7 +60,11 @@ const LeaderboardPage = () => {
           {sortedStates.map((state, index) => (
             <tr key={state.userId}>
               <td>{index + 1}</td>
-              <td>{state.name}</td>
+              <td>
+                <a href={`/profile/${state.name}`}>
+                {state.name}
+                </a>
+              </td>
               <td>{state.totalHours}</td>
             </tr>
           ))}
