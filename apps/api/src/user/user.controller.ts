@@ -29,9 +29,9 @@ export const storage = {
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get(':id') // This defines the route for GET requests to /user/:id
-  async findById(@Param('id') id: string) { // Use @Param to access route parameters
-    return this.userService.findById(id);
+  @Post("id")
+  async findById(@Body("id") id : string){
+    return this.userService.findById(id)
   }
 
   @Post("email")

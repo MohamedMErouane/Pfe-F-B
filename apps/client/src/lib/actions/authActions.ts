@@ -56,7 +56,6 @@ export const activateUser: ActivateUserFunc = async (jwtUserID) => {
     }
   });
   
-
   if (!result.ok) {
     throw new Error(`Failed to find user`);
   }

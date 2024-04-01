@@ -19,10 +19,30 @@ export class UserService {
     })
 
     if(user) throw new ConflictException("email duplicated !")
+
+    const username = dto.email.split('@')[0];
+
+    let isUsernameUnique = false;
+    let uniqueUsername = username;
+    let counter = 1;
+
+    while (!isUsernameUnique) {
+      const existingUser = await this.prisma.user.findUnique({
+        where: { username: uniqueUsername },
+      });
+
+      if (!existingUser) {
+        isUsernameUnique = true;
+      } else {
+        uniqueUsername = `${username}${counter}`;
+        counter++;
+      }
+    }
+    dto.username = uniqueUsername
     const newUser = await this.prisma.user.create({
       data : {
         ...dto,
-        password : await hash(dto.password, 10)
+        password : await hash(dto.password, 10),
       }
     })
 
