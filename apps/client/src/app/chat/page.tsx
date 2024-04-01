@@ -1,39 +1,30 @@
 'use client'
 
-// Import necessary modules
 import { useState, useEffect, useRef } from 'react';
-import { CameraIcon } from '@heroicons/react/24/outline';
 import SideBar from '@/components/SideBar';
 import io from 'socket.io-client';
 import { BACKEND_URL } from '@/lib/Constants';
 import { useSession } from 'next-auth/react';
+import { Link } from 'react-router-dom';
 
-// Define the Message interface
 interface Message {
+  id : number
   text: string;
   name: string;
+  image : string
 }
 
-// Define the ChatPage component
 const ChatPage = () => {
-  // Access session data
-  const { data: session } = useSession(); 
-  // Initialize socket state
-  const [socket, setSocket] = useState<any>(null); 
-  // Initialize messages state
-  const [messages, setMessages] = useState<Message[]>([]); 
-  // Initialize new message state
-  const [newMessage, setNewMessage] = useState(''); 
-  // Initialize chatRef
+  const { data: session } = useSession();
+  const [socket, setSocket] = useState<any>(null);
+  const [messages, setMessages] = useState<Message[]>([])
+  const [newMessage, setNewMessage] = useState('');
   const chatRef = useRef<HTMLDivElement>(null); 
 
   useEffect(() => {
-    // Establish connection with server
-    const newSocket = io(BACKEND_URL); 
-    // Set the socket state
-    setSocket(newSocket); 
+    const newSocket = io(BACKEND_URL);
+    setSocket(newSocket);
 
-    // Socket event listeners
     newSocket.on('connect', () => {
       console.log('Connected to socket server');
     });
@@ -42,30 +33,26 @@ const ChatPage = () => {
       console.log('Disconnected from socket server');
     });
 
-    // Fetch all messages from server
-    newSocket.emit('findAllMessages', {}, (response: Message[]) => {
+    newSocket.emit('findAllMessages', {}, (response : Message[]) => {
       setMessages(response);
     });
 
-    // Listen for incoming messages
-    newSocket.on('message', (message: Message) => {
+    newSocket.on('message', (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
-    // Clean up function to disconnect from the server when component unmounts
     return () => {
       newSocket?.disconnect();
     };
   }, []);
 
   useEffect(() => {
-    // Join the chat when the component mounts
-    if (socket && session && session.user.firstName && session.user.lastName) {
-      joinChat(`${session.user.lastName} ${session.user.firstName}`);
+    if (socket && session && session.user.username) {
+      joinChat(session.user.username);
     }
   }, [socket, session]);
 
-  const joinChat = (name: string) => {
+  const joinChat = (name : string) => {
     if (socket && name) {
       socket.emit('join', { name }, () => {
         console.log('Joined the chat');
@@ -73,22 +60,19 @@ const ChatPage = () => {
     }
   };
 
-  // Event handler for input change
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e) => {
     setNewMessage(e.target.value);
   };
 
-  // Event handler for form submission
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (newMessage.trim() !== '') {
-      socket.emit('createMessage', { text: newMessage, name: `${session?.user.lastName} ${session?.user.firstName}` || 'Unknown' });
+      socket.emit('createMessage', { text: newMessage, name: session?.user.username || 'Unknown' });
       setNewMessage('');
     }
   };
 
   useEffect(() => {
-    // Scroll to bottom on new message
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
@@ -102,18 +86,34 @@ const ChatPage = () => {
           <h1 className="text-white text-3xl mb-4">Chat App</h1>
           <div className="flex-1 overflow-y-auto" ref={chatRef} style={{ maxHeight: '70vh', scrollbarWidth: 'thin', scrollbarColor: 'transparent transparent' }}>
             {messages.map((message, index) => (
-              <div key={index} className={`flex ${message.name === `${session?.user.lastName} ${session?.user.firstName}` ? 'justify-end' : ''} mb-4`}>
-                <div className={`flex items-center space-x-2 ${message.name === `${session?.user.lastName} ${session?.user.firstName}` ? 'flex-row-reverse' : ''}`}>
-                  {message.name !== `${session?.user.lastName} ${session?.user.firstName}` && (
-                    <div className="bg-gray-700 text-xs text-gray-300 px-2 py-1 rounded-md">
-                      {message.name}
+              <div key={index} className={`flex ${message.name === session?.user.username ? 'justify-end' : ''} mb-4`}>
+              <div className={`flex items-center space-x-2 ${message.name === session?.user.username ? 'flex-row-reverse' : ''}`}>
+                {message.name !== session?.user.username && (
+                  <div className="flex items-center space-x-2">
+                    <img 
+                      src={message.image ? `http://localhost:3333/user/profile/${message.name}` : '/1.jpg'} 
+                      alt="Profile Picture" 
+                      className="h-9 w-9 rounded-full" // Set height and width of the image
+                    />
+                    <div>
+                      <a href={`/profile/${message.name}`}>
+                        <p className="text-xs text-gray-300">{message.name}</p>
+                      </a>
+                      <p className={`rounded-lg px-4 py-2 max-w-md ${message.name === session?.user.username ? 'bg-blue-500 text-white' : 'bg-gray-700 text-white'}`}>
+                        {message.text}
+                      </p>
                     </div>
-                  )}
-                  <div className={`rounded-lg px-4 py-2 max-w-md ${message.name === `${session?.user.lastName} ${session?.user.firstName}` ? 'bg-blue-500 text-white' : 'bg-gray-700 text-white'}`}>
-                    {message.text}
                   </div>
-                </div>
+                )}
+                {message.name === session?.user.username && (
+                  <div>
+                    <p className={`rounded-lg px-4 py-2 max-w-md bg-blue-500 text-white`}>
+                      {message.text}
+                    </p>
+                  </div>
+                )}
               </div>
+            </div>
             ))}
           </div>
           <form onSubmit={handleSubmit} className="flex items-center mt-4">

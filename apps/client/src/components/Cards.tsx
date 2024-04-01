@@ -50,7 +50,7 @@ function Card({ username }) {
         setTwitter(userData.twitter);
         setInstagram(userData.instagram);
         setLinkedIn(userData.linkedIn);
-        setImage(userData.image ? `http://localhost:3333/user/profile/${username}` : '/1.jpg'); // Set image to null if not provided
+        setImage(`http://localhost:3333/user/profile/${username}`); // Set image to null if not provided
 
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -136,22 +136,22 @@ function Card({ username }) {
               <p className='text-sm text-neutral-600 text-center mx-10'>{about}</p>
               <div className='flex justify-center items-center gap-6 py-6'>
                 {facebook && (
-                  <a href={facebook} target="_blank" rel="noopener noreferrer">
+                  <a href={`https://facebook.com/${facebook}`} target="_blank" rel="noopener noreferrer">
                     <FaFacebookSquare className='w-6 h-6 text-blue-600 cursor-pointer' />
                   </a>
                 )}
                 {twitter && (
-                  <a href={twitter} target="_blank" rel="noopener noreferrer">
+                  <a href={`https://twitter.com/${twitter}`} target="_blank" rel="noopener noreferrer">
                     <BsTwitter className='w-6 h-6 text-blue-400 cursor-pointer' />
                   </a>
                 )}
                 {instagram && (
-                  <a href={instagram} target="_blank" rel="noopener noreferrer">
+                  <a href={`https://www.instagram.com/${instagram}`} target="_blank" rel="noopener noreferrer">
                     <FaInstagram className='w-6 h-6 text-yellow-400 cursor-pointer' />
                   </a>
                 )}
                 {linkedIn && (
-                  <a href={linkedIn} target="_blank" rel="noopener noreferrer">
+                  <a href={`https://www.instagram.com/${linkedIn}`} target="_blank" rel="noopener noreferrer">
                     <FaLinkedin className='w-6 h-6 text-blue-400 cursor-pointer' />
                   </a>
                 )}

@@ -38,7 +38,9 @@ export class UserService {
         counter++;
       }
     }
+    
     dto.username = uniqueUsername
+    dto.image = '1.jpg'
     const newUser = await this.prisma.user.create({
       data : {
         ...dto,
