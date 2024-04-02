@@ -39,11 +39,15 @@ const Appbar = () => {
       <nav className={`${styles.navbar} ${showNavbar ? '' : styles.hide}`}>
         <div className={styles.navbarLogo}>
           <IoMdSchool size={40} />
-          <span>Study
-            With Me</span>
+          <span>
+          <Link href="/">
+          Study
+            With Me
+          </Link>
+            </span>
         </div>
         <div className={styles.navbarButtons}>
-          <Link href="/auth/signup" passHref className={`${styles.navButton} ${styles.signup}`}>
+          <Link href="/auth/signup" passHref className={`${styles.navButton} ${styles.login}`}>
             Sign Up
           </Link>
           <Link href="/auth/signin" passHref className={`${styles.navButton} ${styles.login}`}>

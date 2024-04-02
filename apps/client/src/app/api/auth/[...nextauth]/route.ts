@@ -36,8 +36,18 @@ export const authOptions: AuthOptions = {
   },
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      clientId: process.env.AUTH_GOOGLE_ID as string,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
+      profile(profile) {
+        return {
+          id: profile.sub,
+          firstName : profile.given_name,
+          lastName : profile.family_name,
+          email: profile.email,
+          image: profile.picture,
+          phone : profile.phone ?? '',
+        };
+      },
       idToken: true,
 
       authorization: {
@@ -87,6 +97,39 @@ export const authOptions: AuthOptions = {
   ],
 
   callbacks: {
+
+    async signIn({account,profile}){
+
+      console.log('from the sign with google')
+      if(!profile?.email){
+        await fetch( BACKEND_URL + "/auth/signup", {
+          method: "POST",
+          body: JSON.stringify({
+            email : profile?.email,
+            firstName : profile?.name,
+            lastName : profile?.name,
+          }),
+         
+        });
+        const res = await fetch( BACKEND_URL + "/auth/signin", {
+          method: "POST",
+          body: JSON.stringify({
+            email: profile?.email,
+            firstName: profile?.name,
+            lastName: profile?.name,
+            phone: "", 
+            password: "",
+            image: profile?.image ?? "",
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      }
+      
+        return true
+      },
+
     async jwt({ token, user }) {
       if (user) return { ...token, ...user };
 

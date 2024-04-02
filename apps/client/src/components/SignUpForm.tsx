@@ -21,6 +21,7 @@ import { passwordStrength } from "check-password-strength";
 import PasswordStrength from "./PasswordStrength";
 import { registerUser } from "@/lib/actions/authActions";
 import { toast } from "react-toastify";
+import { signIn } from "next-auth/react";
 
 const FormSchema = z
   .object({
@@ -90,6 +91,10 @@ const SignupForm = () => {
     }
   };
 
+  const handleClick = () => {
+    console.log("handleClick function called");
+    signIn("google");
+  };
 
   return (
     <div className="flex h-screen">
@@ -183,14 +188,14 @@ const SignupForm = () => {
           name="accepted"
           render={({ field }) => (
             <Checkbox
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              className="col-span-2 text-black"
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            className="col-span-2 text-black border border-black"
             >
-              I Accept The <Link href="/terms">Terms</Link>
             </Checkbox>
           )}
         />
+        <p className="text-black">I Accept The <Link href="/terms">Terms</Link></p>
       </div>
       {!!errors.accepted && (
         <p className="text-red-500">{errors.accepted.message}</p>
@@ -209,7 +214,7 @@ const SignupForm = () => {
     <div className="my-4 flex items-center border-t border-gray-300">
       <p className="mx-4 text-center flex-1">OR</p>
     </div>
-    <button className="w-full flex items-center justify-center border border-gray-300 rounded-md py-3 font-semibold transition duration-300 hover:bg-gray-100">
+    <button onClick={handleClick} className="w-full flex items-center justify-center border border-gray-300 rounded-md py-3 font-semibold transition duration-300 hover:bg-gray-100">
       <img className="w-6 h-6 mr-2" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="Google Logo" />
       <span className="text-black">Sign Up with Google</span>
     </button>

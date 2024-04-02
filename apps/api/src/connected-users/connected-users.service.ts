@@ -8,10 +8,18 @@ export class ConnectedUsersService {
   private connectedUsers: ConnectedUserDto[] = [];
 
   async create(userDto: ConnectedUserDto) {
+
+    const existingUser = this.connectedUsers.find(user => user.username === userDto.username);
+    
+    if (existingUser) {
+        console.log(`User with username ${userDto.username} already exists.`);
+        return existingUser;
+    }
+
     this.connectedUsers.push(userDto);
-    console.log(this.connectedUsers)
+    console.log(this.connectedUsers);
     return userDto;
-  }
+}
 
   async findAll() {
     console.log(this.connectedUsers)

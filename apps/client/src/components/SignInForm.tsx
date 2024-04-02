@@ -31,13 +31,11 @@ interface Props {
   type InputType = z.infer<typeof FormSchema>;
 
 const SignInForm = (props: Props) => {
+  const handleClick = () => {
+    console.log("handleClick function called");
+    signIn("google");
+  };
 
-    const googleSignIn = async () => {
-        const result = await signIn("google", {
-          callbackUrl: "/",
-        });
-        console.log({ result });
-      };
 
     const router = useRouter();
   const [visiblePass, setVisiblePass] = useState(false);
@@ -105,8 +103,8 @@ const SignInForm = (props: Props) => {
                             type={visiblePass ? "text" : "password"}
                           />
                           <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                            <button type="button" onClick={() => setVisiblePass((prev) => !prev)}>
-                              {visiblePass ? <EyeSlashIcon className="w-4" /> : <EyeIcon className="w-4" />}
+                            <button type="button" onClick={() => setVisiblePass((prev) => !prev)} className="text-black">
+                              {visiblePass ? <EyeSlashIcon className="w-4 color-black" /> : <EyeIcon className="w-4" />}
                             </button>
                           </div>
                         </div>
@@ -124,7 +122,7 @@ const SignInForm = (props: Props) => {
                         <p className="mx-4 text-center flex-1">OR</p>
                     </div>
                     <button 
-                        onClick={googleSignIn}
+                        onClick={handleClick}
                         className="w-full flex items-center justify-center border border-gray-300 rounded-md py-3 font-semibold transition duration-300 hover:bg-gray-100"
                     >
                         <img className="w-6 h-6 mr-2" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="Google Logo" />

@@ -137,7 +137,7 @@ const App: React.FC = () => {
 
           {/* My camera stream */}
           <div className="h-1/2 p-3 flex items-center justify-center w-52 ml-10 mt-40">
-            {/* <Video /> */}
+            <Video />
           </div>
         </div>
 
@@ -161,8 +161,8 @@ const App: React.FC = () => {
           <div className="flex-1 flex items-center justify-center">
             {/* My Video Component */}
             <div className="p-2 flex justify-center w-full mt-50">
-              {/* <Video /> */}
-              {/* <Video /> */}
+              <Video />
+              <Video />
             </div>
           </div>
         </div>
